@@ -3,17 +3,33 @@ description: 'Great someone and record the time'
 
 on:
   workflow_dispatch:  # Manually triggered by a user
-  
-inputs:
-  who-to-greet:
-    description: 'Who to greet'
-    required: true
-    default: 'World'
+    inputs:
+      who-to-greet:
+        description: 'Who to greet'
+        required: true
+        default: 'World'
 
-outputs:
-  time:
-    description: 'The time we greeted you'
+jobs:
+  greet:
+    runs-on: ubuntu-latest
 
-runs:
-  using: 'node16'
-  main: 'index.js'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Greet and record time
+        id: greet_time
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Run the greeting script
+        run: |
+          node index.js "${{ github.event.inputs.who-to-greet }}"
+        env:
+          GREETING_TIME: ${{ steps.greet_time.outputs.time }}
+
+    outputs:
+      time:
+        description: 'The time we greeted you'
+        value: ${{ steps.greet_time.outputs.time }}
