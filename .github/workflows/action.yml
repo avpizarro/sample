@@ -1,6 +1,9 @@
 name: 'Hello World JS Action'
 description: 'Great someone and record the time'
 
+on:
+  workflow_dispatch:  # Manually triggered by a user
+  
 inputs:
   who-to-greet:
     description: 'Who to greet'
