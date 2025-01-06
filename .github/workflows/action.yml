@@ -17,19 +17,17 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
-      - name: Greet and record time
-        id: greet_time
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
 
-      - name: Run the greeting script
+      - name: Greet and record time
+        id: greet_time
         run: |
           node index.js "${{ github.event.inputs.who-to-greet }}"
         env:
           GREETING_TIME: ${{ steps.greet_time.outputs.time }}
 
     outputs:
-      time:
-        description: 'The time we greeted you'
-        value: ${{ steps.greet_time.outputs.time }}
+      time: ${{ steps.greet_time.outputs.time }}
